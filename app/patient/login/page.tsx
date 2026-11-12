@@ -282,3 +282,4 @@ export default function PatientLoginPage() {
     </div>
   );
 }
+

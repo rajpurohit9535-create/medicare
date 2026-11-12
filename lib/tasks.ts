@@ -168,3 +168,4 @@ export function getCurrentTask(instances: TaskInstanceItem[]): CurrentTaskResult
 
   return { type: "all_done", totalCount: sorted.length };
 }
+

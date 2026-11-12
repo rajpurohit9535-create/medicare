@@ -58,3 +58,4 @@ export function getPostgresDayOfWeek(date: Date = new Date()): number {
   const jsDay = date.getDay(); // 0 is Sunday, 1 is Monday ... 6 is Saturday
   return jsDay === 0 ? 7 : jsDay;
 }
+

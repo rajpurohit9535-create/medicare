@@ -75,3 +75,4 @@ export function RenderTaskIcon({
   const Icon = item.icon;
   return <Icon className={className} />;
 }
+

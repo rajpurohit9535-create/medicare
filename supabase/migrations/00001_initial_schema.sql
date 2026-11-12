@@ -305,3 +305,4 @@ end $$;
 alter publication supabase_realtime add table public.messages;
 alter publication supabase_realtime add table public.alerts;
 alter publication supabase_realtime add table public.task_instances;
+
