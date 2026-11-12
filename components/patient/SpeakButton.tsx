@@ -36,10 +36,9 @@ export function SpeakButton({
         speech.speak(textToSpeak);
       }}
       aria-label={ariaLabel}
-      className={`rounded-2xl bg-white hover:bg-gray-100 border border-gray-200 text-[#2E7D32] shadow-sm flex items-center justify-center transition active:scale-95 shrink-0 ${sizeClasses} ${className}`}
+      className={`rounded-2xl bg-white hover:bg-gray-50 active:bg-green-50 border border-gray-200 text-[#2E7D32] shadow-xs flex items-center justify-center transition-transform active:scale-90 cursor-pointer touch-manipulation select-none shrink-0 ${sizeClasses} ${className}`}
     >
       <Volume2 className={iconSizes} />
     </button>
   );
 }
-

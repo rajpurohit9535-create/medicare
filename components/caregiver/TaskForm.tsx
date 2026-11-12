@@ -167,7 +167,7 @@ export function TaskForm({
                 key={tpl.id}
                 type="button"
                 onClick={() => handleApplyTemplate(tpl)}
-                className="px-2.5 py-1.5 rounded-lg bg-gray-50 hover:bg-green-50 text-xs font-semibold text-gray-700 hover:text-[#2E7D32] border border-gray-200 hover:border-green-300 transition flex items-center gap-1"
+                className="px-2.5 py-1.5 rounded-lg bg-gray-50 hover:bg-green-50 active:scale-95 text-xs font-semibold text-gray-700 hover:text-[#2E7D32] border border-gray-200 hover:border-green-300 transition flex items-center gap-1 cursor-pointer touch-manipulation"
               >
                 <RenderTaskIcon iconKey={tpl.icon} className="w-3.5 h-3.5" />
                 <span>{tpl.title}</span>
@@ -281,7 +281,7 @@ export function TaskForm({
                     key={d.id}
                     type="button"
                     onClick={() => handleToggleDay(d.id)}
-                    className={`py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition ${
+                    className={`py-2.5 rounded-xl text-xs sm:text-sm font-bold border transition active:scale-95 cursor-pointer touch-manipulation select-none ${
                       isSelected
                         ? "bg-[#2E7D32] border-[#2E7D32] text-white shadow-xs"
                         : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
@@ -325,7 +325,7 @@ export function TaskForm({
                       type="button"
                       disabled={idx === 0}
                       onClick={() => handleMoveStep(idx, "up")}
-                      className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30"
+                      className="p-1.5 text-gray-400 hover:text-gray-700 active:scale-90 cursor-pointer touch-manipulation disabled:opacity-30 disabled:cursor-not-allowed"
                       title="Move up"
                     >
                       <ArrowUp className="w-4 h-4" />
@@ -334,7 +334,7 @@ export function TaskForm({
                       type="button"
                       disabled={idx === formData.steps.length - 1}
                       onClick={() => handleMoveStep(idx, "down")}
-                      className="p-1.5 text-gray-400 hover:text-gray-700 disabled:opacity-30"
+                      className="p-1.5 text-gray-400 hover:text-gray-700 active:scale-90 cursor-pointer touch-manipulation disabled:opacity-30 disabled:cursor-not-allowed"
                       title="Move down"
                     >
                       <ArrowDown className="w-4 h-4" />
@@ -342,7 +342,7 @@ export function TaskForm({
                     <button
                       type="button"
                       onClick={() => handleRemoveStep(idx)}
-                      className="p-1.5 text-red-500 hover:text-red-700"
+                      className="p-1.5 text-red-500 hover:text-red-700 active:scale-90 cursor-pointer touch-manipulation"
                       title="Remove step"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -369,7 +369,7 @@ export function TaskForm({
               <button
                 type="button"
                 onClick={handleAddStep}
-                className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm font-semibold flex items-center gap-1.5"
+                className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 active:scale-95 text-gray-800 text-sm font-semibold flex items-center gap-1.5 cursor-pointer touch-manipulation"
               >
                 <Plus className="w-4 h-4" />
                 Add Step
@@ -441,12 +441,12 @@ export function TaskForm({
           </div>
 
           {/* Form Actions */}
-          <div className="pt-6 border-t border-gray-200 flex items-center justify-end gap-3">
+          <div className="pt-6 border-t border-gray-200 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3">
             {onCancel && (
               <button
                 type="button"
                 onClick={onCancel}
-                className="px-5 py-2.5 rounded-xl border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                className="px-5 py-3 rounded-xl border border-gray-300 text-sm font-semibold text-gray-700 hover:bg-gray-50 active:scale-95 transition cursor-pointer touch-manipulation text-center"
               >
                 Cancel
               </button>
@@ -454,7 +454,7 @@ export function TaskForm({
             <button
               type="submit"
               disabled={isSubmitting || !formData.title.trim()}
-              className="px-6 py-2.5 rounded-xl bg-[#2E7D32] hover:bg-[#256629] text-white text-sm font-bold shadow-sm transition disabled:opacity-50"
+              className="px-6 py-3 rounded-xl bg-[#2E7D32] hover:bg-[#256629] active:scale-[0.98] text-white text-sm font-bold shadow-sm transition cursor-pointer touch-manipulation disabled:opacity-50 text-center"
             >
               {isSubmitting ? "Saving..." : "Save Task Routine"}
             </button>
@@ -546,3 +546,4 @@ export function TaskForm({
     </div>
   );
 }
+

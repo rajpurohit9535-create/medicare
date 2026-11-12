@@ -17,7 +17,7 @@ export function BottomNav() {
   return (
     <nav
       aria-label="Bottom Navigation"
-      className="fixed bottom-0 inset-x-0 bg-white border-t-2 border-gray-200 z-50 shadow-lg safe-area-bottom"
+      className="fixed bottom-0 inset-x-0 bg-white border-t-2 border-gray-200 z-50 shadow-lg pb-[env(safe-area-inset-bottom)]"
     >
       <div className="max-w-2xl mx-auto grid grid-cols-4 h-20">
         {navItems.map((item) => {
@@ -31,14 +31,14 @@ export function BottomNav() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center justify-center min-h-[64px] transition ${
+                className={`flex flex-col items-center justify-center min-h-[64px] transition active:scale-95 cursor-pointer touch-manipulation select-none ${
                   isActive
                     ? "bg-red-700 text-white"
                     : "bg-[#C62828] text-white hover:bg-red-700 active:bg-red-800"
                 }`}
               >
-                <Icon className="w-8 h-8 stroke-[2.5]" />
-                <span className="text-lg font-black tracking-wide mt-0.5">
+                <Icon className="w-7 h-7 sm:w-8 sm:h-8 stroke-[2.5]" />
+                <span className="text-base sm:text-lg font-black tracking-wide mt-0.5">
                   {item.label}
                 </span>
               </Link>
@@ -49,17 +49,19 @@ export function BottomNav() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex flex-col items-center justify-center min-h-[64px] transition ${
+              className={`flex flex-col items-center justify-center min-h-[64px] transition active:scale-95 cursor-pointer touch-manipulation select-none ${
                 isActive
                   ? "bg-green-50 text-[#2E7D32] border-t-4 border-[#2E7D32]"
                   : "text-gray-600 hover:text-gray-900 hover:bg-gray-50 active:bg-gray-100"
               }`}
             >
               <Icon
-                className={`w-7 h-7 ${isActive ? "stroke-[2.5] text-[#2E7D32]" : "text-gray-600"}`}
+                className={`w-6 h-6 sm:w-7 sm:h-7 ${
+                  isActive ? "stroke-[2.5] text-[#2E7D32]" : "text-gray-600"
+                }`}
               />
               <span
-                className={`text-base font-bold mt-0.5 ${
+                className={`text-xs sm:text-base font-bold mt-0.5 ${
                   isActive ? "text-[#2E7D32]" : "text-gray-600"
                 }`}
               >
@@ -72,4 +74,3 @@ export function BottomNav() {
     </nav>
   );
 }
-

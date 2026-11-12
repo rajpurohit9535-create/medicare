@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TaskCard } from "@/components/patient/TaskCard";
 import { TaskInstanceItem, TaskItem } from "@/lib/tasks";
 import { CheckCircle2, Volume2 } from "lucide-react";
@@ -40,9 +40,22 @@ export default function PatientHomePage() {
     sampleInstance
   );
   const [isDoneState, setIsDoneState] = useState(false);
+  const [patientName, setPatientName] = useState("Amma");
+
+  useEffect(() => {
+    try {
+      const match = document.cookie.match(/cc_patient=([^;]+)/);
+      if (match) {
+        const data = JSON.parse(decodeURIComponent(match[1]));
+        if (data.displayName) {
+          setPatientName(data.displayName);
+        }
+      }
+    } catch {}
+  }, []);
 
   const handleDone = (id: string) => {
-    speech.speak("Well done, Amma. Task completed.");
+    speech.speak(`Well done, ${patientName}. Task completed.`);
     setIsDoneState(true);
     setTaskInstance(null);
   };
@@ -68,12 +81,12 @@ export default function PatientHomePage() {
           All done for today!
         </h2>
         <p className="text-2xl font-bold text-[#2E7D32] mt-3">
-          Well done, Amma.
+          Well done, {patientName}.
         </p>
         <button
           type="button"
-          onClick={() => speech.speak("All done for today. Well done, Amma.")}
-          className="mt-6 p-4 rounded-2xl bg-white border border-gray-200 text-[#2E7D32] flex items-center gap-2 font-bold text-lg shadow-sm"
+          onClick={() => speech.speak(`All done for today. Well done, ${patientName}.`)}
+          className="mt-6 px-6 py-3.5 rounded-2xl bg-white hover:bg-gray-50 active:scale-95 border border-gray-200 text-[#2E7D32] flex items-center gap-2 font-bold text-lg shadow-sm transition cursor-pointer touch-manipulation"
         >
           <Volume2 className="w-6 h-6" />
           Hear message
@@ -87,7 +100,7 @@ export default function PatientHomePage() {
       <TaskCard
         instance={taskInstance}
         task={sampleTask}
-        displayName="Amma"
+        displayName={patientName}
         onDone={handleDone}
         onSnooze={handleSnooze}
       />

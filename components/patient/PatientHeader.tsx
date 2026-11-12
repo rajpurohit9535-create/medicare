@@ -12,9 +12,10 @@ interface PatientHeaderProps {
 }
 
 export function PatientHeader({
-  displayName = "Amma",
+  displayName: initialDisplayName = "Amma",
   timeZone = "Asia/Kolkata",
 }: PatientHeaderProps) {
+  const [displayName, setDisplayName] = useState(initialDisplayName);
   const [headerInfo, setHeaderInfo] = useState<{
     dayAndDate: string;
     period: string;
@@ -23,6 +24,16 @@ export function PatientHeader({
   } | null>(null);
 
   useEffect(() => {
+    try {
+      const match = document.cookie.match(/cc_patient=([^;]+)/);
+      if (match) {
+        const data = JSON.parse(decodeURIComponent(match[1]));
+        if (data.displayName) {
+          setDisplayName(data.displayName);
+        }
+      }
+    } catch {}
+
     setHeaderInfo(formatPatientHeaderDate(new Date(), timeZone));
     const interval = setInterval(() => {
       setHeaderInfo(formatPatientHeaderDate(new Date(), timeZone));

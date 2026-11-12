@@ -29,7 +29,7 @@ export default function WhoAmIPage() {
       <div className="flex items-center justify-between mb-6">
         <Link
           href="/patient"
-          className="p-3 rounded-2xl bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 flex items-center justify-center min-w-[56px] min-h-[56px]"
+          className="p-3 rounded-2xl bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 active:scale-95 transition flex items-center justify-center min-w-[56px] min-h-[56px] cursor-pointer touch-manipulation shadow-xs"
           aria-label="Back to routine"
         >
           <ArrowLeft className="w-8 h-8" />
@@ -37,7 +37,7 @@ export default function WhoAmIPage() {
         <button
           type="button"
           onClick={() => speech.speak(fullSpeechText)}
-          className="px-5 py-3 rounded-2xl bg-white border border-gray-300 text-[#2E7D32] flex items-center gap-2 font-bold text-lg shadow-sm"
+          className="px-5 py-3 rounded-2xl bg-white hover:bg-gray-50 active:scale-95 border border-gray-300 text-[#2E7D32] flex items-center gap-2 font-bold text-lg shadow-sm transition cursor-pointer touch-manipulation"
           aria-label="Read all details aloud"
         >
           <Volume2 className="w-7 h-7" />

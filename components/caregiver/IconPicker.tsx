@@ -49,7 +49,7 @@ export function IconPicker({ value, onChange }: IconPickerProps) {
             key={key}
             type="button"
             onClick={() => onChange(key)}
-            className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1.5 transition text-center ${
+            className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer touch-manipulation text-center select-none ${
               isSelected
                 ? "border-[#2E7D32] bg-green-50 ring-2 ring-[#2E7D32] text-[#2E7D32]"
                 : "border-gray-200 bg-white hover:bg-gray-50 text-gray-700"

@@ -6,16 +6,42 @@ export async function middleware(request: NextRequest) {
     request,
   });
 
+  const pathname = request.nextUrl.pathname;
+
+  // Caregiver public routes
+  const isCaregiverAuthRoute =
+    pathname === "/caregiver/login" || pathname === "/caregiver/signup";
+  // Patient public routes
+  const isPatientAuthRoute = pathname === "/patient/login";
+
+  // Caregiver protected routes
+  const isCaregiverRoute =
+    pathname.startsWith("/caregiver") && !isCaregiverAuthRoute;
+  // Patient protected routes
+  const isPatientRoute =
+    pathname.startsWith("/patient") && !isPatientAuthRoute;
+
+  // Check demo/local session cookies
+  const hasPatientCookie = request.cookies.has("cc_patient");
+  const hasCaregiverCookie = request.cookies.has("cc_caregiver");
+
   const supabaseUrl =
     process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
   const supabaseAnonKey =
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key";
+  const isPlaceholder =
+    supabaseUrl.includes("placeholder") || supabaseAnonKey.includes("placeholder");
 
-  // If using placeholder credentials, allow browsing without redirect loops during local mock development
-  if (
-    supabaseUrl.includes("placeholder") ||
-    supabaseAnonKey.includes("placeholder")
-  ) {
+  // In placeholder mode or demo cookie mode
+  if (isPlaceholder) {
+    if (isCaregiverRoute && !hasCaregiverCookie) {
+      // allow access in placeholder dev mode
+      return supabaseResponse;
+    }
+    if (isPatientRoute && !hasPatientCookie) {
+      // allow access in placeholder dev mode
+      return supabaseResponse;
+    }
     return supabaseResponse;
   }
 
@@ -43,31 +69,21 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const pathname = request.nextUrl.pathname;
-
-  // Caregiver public routes
-  const isCaregiverAuthRoute =
-    pathname === "/caregiver/login" || pathname === "/caregiver/signup";
-  // Patient public routes
-  const isPatientAuthRoute = pathname === "/patient/login";
-
-  // Caregiver protected routes
-  const isCaregiverRoute =
-    pathname.startsWith("/caregiver") && !isCaregiverAuthRoute;
-  // Patient protected routes
-  const isPatientRoute =
-    pathname.startsWith("/patient") && !isPatientAuthRoute;
+  const role = user
+    ? user.app_metadata?.role || user.user_metadata?.role
+    : hasPatientCookie
+    ? "patient"
+    : hasCaregiverCookie
+    ? "caregiver"
+    : null;
 
   if (isCaregiverRoute) {
-    if (!user) {
+    if (!role) {
       const url = request.nextUrl.clone();
       url.pathname = "/caregiver/login";
       url.searchParams.set("redirectTo", pathname);
       return NextResponse.redirect(url);
     }
-
-    const role =
-      user.app_metadata?.role || user.user_metadata?.role;
 
     if (role !== "caregiver") {
       const url = request.nextUrl.clone();
@@ -77,14 +93,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isPatientRoute) {
-    if (!user) {
+    if (!role) {
       const url = request.nextUrl.clone();
       url.pathname = "/patient/login";
       return NextResponse.redirect(url);
     }
-
-    const role =
-      user.app_metadata?.role || user.user_metadata?.role;
 
     if (role !== "patient") {
       const url = request.nextUrl.clone();
@@ -94,9 +107,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect if already logged in and visiting auth pages
-  if (user) {
-    const role =
-      user.app_metadata?.role || user.user_metadata?.role;
+  if (role) {
     if (isCaregiverAuthRoute && role === "caregiver") {
       const url = request.nextUrl.clone();
       url.pathname = "/caregiver";
@@ -114,15 +125,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    /*
-     * Match all request paths except for:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - icon.svg, manifest.json
-     * - api routes (they handle their own auth checks)
-     */
     "/((?!_next/static|_next/image|favicon.ico|icon.svg|manifest.json|api/).*)",
   ],
 };
-

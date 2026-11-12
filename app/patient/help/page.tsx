@@ -32,17 +32,17 @@ export default function PatientHelpPage() {
             <LifeBuoy className="w-16 h-16 stroke-[2.5]" />
           </div>
 
-          <h1 className="text-4xl font-extrabold text-[#1F2937]">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1F2937]">
             Emergency Help
           </h1>
-          <p className="text-2xl text-[#4B5563] font-medium leading-relaxed">
+          <p className="text-xl sm:text-2xl text-[#4B5563] font-medium leading-relaxed">
             If you feel lost, unwell, or need your family right away, tap the red button below.
           </p>
 
           <BigButton
             variant="danger"
             onClick={handleInitialClick}
-            className="min-h-[80px] text-3xl shadow-xl mt-4"
+            className="min-h-[80px] sm:min-h-[90px] text-2xl sm:text-3xl shadow-xl mt-4 cursor-pointer touch-manipulation"
           >
             <LifeBuoy className="w-9 h-9 stroke-[3]" />
             I Need Help
@@ -50,7 +50,7 @@ export default function PatientHelpPage() {
 
           <Link
             href="/patient"
-            className="w-full min-h-[56px] rounded-2xl bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xl flex items-center justify-center gap-2 border border-gray-300"
+            className="w-full min-h-[56px] rounded-2xl bg-white hover:bg-gray-100 active:scale-[0.98] text-gray-700 font-bold text-xl flex items-center justify-center gap-2 border border-gray-300 transition cursor-pointer touch-manipulation shadow-xs"
           >
             <ArrowLeft className="w-6 h-6" />
             Go back to routine
@@ -64,10 +64,10 @@ export default function PatientHelpPage() {
             <LifeBuoy className="w-12 h-12 stroke-[2.5]" />
           </div>
 
-          <h2 className="text-3xl font-extrabold text-red-900">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-red-900">
             Do you need help right now?
           </h2>
-          <p className="text-xl text-gray-700">
+          <p className="text-lg sm:text-xl text-gray-700">
             We will alert your family immediately.
           </p>
 
@@ -75,7 +75,7 @@ export default function PatientHelpPage() {
             <BigButton
               variant="danger"
               onClick={handleConfirmHelp}
-              className="min-h-[72px] text-2xl"
+              className="min-h-[72px] text-xl sm:text-2xl cursor-pointer touch-manipulation"
             >
               Yes, I need help
             </BigButton>
@@ -83,7 +83,7 @@ export default function PatientHelpPage() {
             <BigButton
               variant="secondary"
               onClick={handleCancel}
-              className="min-h-[64px] text-xl"
+              className="min-h-[64px] text-lg sm:text-xl cursor-pointer touch-manipulation"
             >
               No, I am okay (go back)
             </BigButton>
@@ -100,12 +100,12 @@ export default function PatientHelpPage() {
           <h2 className="text-3xl sm:text-4xl font-extrabold text-[#2E7D32]">
             Help is on the way
           </h2>
-          <p className="text-2xl font-bold text-gray-800">
+          <p className="text-xl sm:text-2xl font-bold text-gray-800">
             Your family has been alerted. Please sit down and stay calm.
           </p>
 
           <div className="p-5 rounded-2xl bg-[#FAF7F2] border border-gray-200 text-left space-y-3">
-            <span className="text-sm font-bold text-gray-500 uppercase">
+            <span className="text-xs font-bold text-gray-500 uppercase">
               Remember
             </span>
             <p className="text-xl font-bold text-gray-900">
@@ -123,7 +123,7 @@ export default function PatientHelpPage() {
                 "Help is on the way. Your family has been alerted. Please sit down and stay calm. You are safe."
               )
             }
-            className="p-4 rounded-2xl bg-gray-100 hover:bg-gray-200 text-[#2E7D32] flex items-center justify-center gap-2 font-bold text-lg w-full"
+            className="p-4 rounded-2xl bg-white hover:bg-gray-50 active:scale-95 border border-gray-200 text-[#2E7D32] flex items-center justify-center gap-2 font-bold text-lg w-full transition cursor-pointer touch-manipulation shadow-xs"
           >
             <Volume2 className="w-6 h-6" />
             Hear reassurance aloud
@@ -133,4 +133,3 @@ export default function PatientHelpPage() {
     </div>
   );
 }
-

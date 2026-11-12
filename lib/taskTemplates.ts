@@ -129,3 +129,4 @@ export const STARTER_TEMPLATES: StarterTemplate[] = [
     encouragement: "Sleep peacefully. You are safe and your family is with you.",
   },
 ];
+

@@ -244,7 +244,7 @@ export default function CaregiverTasksPage() {
               <button
                 type="button"
                 onClick={() => setFormMode("new")}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#2E7D32] hover:bg-[#256629] text-white text-sm font-bold shadow-sm transition"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#2E7D32] hover:bg-[#256629] active:scale-95 text-white text-sm font-bold shadow-sm transition cursor-pointer touch-manipulation"
               >
                 <Plus className="w-4 h-4 stroke-[3]" />
                 Add New Task
@@ -253,7 +253,7 @@ export default function CaregiverTasksPage() {
               <button
                 type="button"
                 onClick={() => setFormMode(null)}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 text-sm font-semibold transition"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 active:scale-95 text-sm font-semibold transition cursor-pointer touch-manipulation"
               >
                 <X className="w-4 h-4" />
                 Back to Task List
@@ -313,7 +313,7 @@ export default function CaregiverTasksPage() {
                     key={tpl.id}
                     type="button"
                     onClick={() => handleQuickAddTemplate(tpl)}
-                    className="p-3 rounded-xl border border-gray-200 hover:border-green-300 bg-gray-50/60 hover:bg-green-50 text-left transition flex items-start gap-2.5 group"
+                    className="p-3 rounded-xl border border-gray-200 hover:border-green-300 bg-gray-50/60 hover:bg-green-50 active:scale-[0.98] text-left transition flex items-start gap-2.5 group cursor-pointer touch-manipulation"
                   >
                     <div className="p-2 rounded-lg bg-white group-hover:bg-[#2E7D32] group-hover:text-white text-gray-700 shadow-2xs shrink-0 transition">
                       <RenderTaskIcon iconKey={tpl.icon} className="w-4 h-4" />
@@ -347,7 +347,7 @@ export default function CaregiverTasksPage() {
                   key={cat.id}
                   type="button"
                   onClick={() => setFilterCategory(cat.id)}
-                  className={`px-3 py-1.5 rounded-full transition ${
+                  className={`px-3 py-1.5 rounded-full transition active:scale-95 cursor-pointer touch-manipulation ${
                     filterCategory === cat.id
                       ? "bg-[#2E7D32] text-white shadow-2xs"
                       : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
@@ -480,7 +480,7 @@ export default function CaregiverTasksPage() {
                           <button
                             type="button"
                             onClick={() => setFormMode(task)}
-                            className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition"
+                            className="p-2.5 rounded-xl bg-gray-100 hover:bg-gray-200 active:scale-90 text-gray-700 transition cursor-pointer touch-manipulation"
                             title="Edit task & view live preview"
                           >
                             <Edit3 className="w-4 h-4" />
@@ -490,7 +490,7 @@ export default function CaregiverTasksPage() {
                           <button
                             type="button"
                             onClick={() => handleDeleteTask(task.id, task.title)}
-                            className="p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition"
+                            className="p-2.5 rounded-xl bg-red-50 hover:bg-red-100 active:scale-90 text-red-600 transition cursor-pointer touch-manipulation"
                             title="Delete task"
                           >
                             <Trash2 className="w-4 h-4" />

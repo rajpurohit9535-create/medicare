@@ -78,7 +78,7 @@ export default function HomePage() {
               <div className="mt-8">
                 <Link
                   href="/patient/login"
-                  className="w-full min-h-[64px] rounded-2xl bg-[#2E7D32] hover:bg-[#256629] text-white text-xl font-bold shadow-md flex items-center justify-center transition"
+                  className="w-full min-h-[64px] rounded-2xl bg-[#2E7D32] hover:bg-[#256629] active:scale-[0.98] text-white text-xl font-bold shadow-md flex items-center justify-center transition cursor-pointer touch-manipulation"
                 >
                   Open Patient Mode
                 </Link>
@@ -116,7 +116,7 @@ export default function HomePage() {
               <div className="mt-8">
                 <Link
                   href="/caregiver"
-                  className="w-full min-h-[64px] rounded-2xl bg-[#1F2937] hover:bg-black text-white text-xl font-bold shadow-md flex items-center justify-center transition"
+                  className="w-full min-h-[64px] rounded-2xl bg-[#1F2937] hover:bg-black active:scale-[0.98] text-white text-xl font-bold shadow-md flex items-center justify-center transition cursor-pointer touch-manipulation"
                 >
                   Open Caregiver Mode
                 </Link>
