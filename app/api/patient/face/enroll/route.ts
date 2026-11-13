@@ -10,12 +10,14 @@ export async function POST(request: NextRequest) {
     const json = await request.json();
     const { familyCode, displayName: reqName, frames, consentGiven } = json;
 
-    if (!Array.isArray(frames) || frames.length < 2) {
+    if (!Array.isArray(frames) || frames.length < 1) {
       return NextResponse.json(
-        { error: "At least 2 camera frames are required for face enrollment." },
+        { error: "At least 1 camera frame is required for face enrollment." },
         { status: 400 }
       );
     }
+
+    const enrollFrames = frames.length === 1 ? [frames[0], frames[0]] : frames;
 
     if (consentGiven === false) {
       return NextResponse.json(
@@ -47,7 +49,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Invoke Python Biometric Engine (YuNet detection + SFace feature extraction)
-    const enrollResult = await faceEngine.enroll(frames);
+    const enrollResult = await faceEngine.enroll(enrollFrames);
     if (!enrollResult.success || !enrollResult.embedding) {
       return NextResponse.json(
         {

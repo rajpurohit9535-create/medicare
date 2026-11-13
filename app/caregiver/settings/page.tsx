@@ -33,7 +33,7 @@ export default function CaregiverSettingsPage() {
   }, []);
 
   const handleDeletePatientBiometrics = async () => {
-    if (!confirm("Are you sure you want to permanently delete Amma's face recognition template? She will need her 4-digit PIN to sign in.")) {
+    if (!confirm("Are you sure you want to reset Amma's face recognition template? She will be prompted to capture her face next time she opens patient mode.")) {
       return;
     }
 
@@ -109,7 +109,7 @@ export default function CaregiverSettingsPage() {
                         ? "bg-green-100 text-[#2E7D32]"
                         : "bg-gray-100 text-gray-600"
                     }`}>
-                      {patientBioStatus === "enrolled" ? "Enrolled & Active" : "Not Enrolled (PIN Only)"}
+                      {patientBioStatus === "enrolled" ? "Enrolled & Active" : "Not Enrolled (Face Capture Required)"}
                     </span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
@@ -130,7 +130,7 @@ export default function CaregiverSettingsPage() {
               )}
             </div>
             <p className="text-xs text-gray-500 mt-4 leading-relaxed">
-              When enrolled, Amma can smile into her device camera to sign in friction-free without memorizing family codes or PINs.
+              When enrolled, Amma can smile into her device camera to sign in friction-free with Face Recognition.
             </p>
           </div>
 

@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error: "TOO_MANY_ATTEMPTS",
-          message: "Please rest for a few minutes or enter your Family Code and PIN.",
+          message: "Please rest for a few minutes before trying again.",
         },
         { status: 429 }
       );
@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
           success: false,
           matched: false,
           error: "NO_ENROLLED_PATIENTS",
-          message: "No faces are enrolled yet. Please sign in with your Family Code and PIN first.",
+          message: "No faces are enrolled yet. Please capture your face to set up Face Recognition.",
         },
         { status: 404 }
       );
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
           error: result.error || "RECOGNITION_MISMATCH",
           message:
             result.message ||
-            "We could not recognize your face. Please hold still and look directly at the camera, or use your PIN.",
+            "We could not recognize your face. Please hold still and look directly at the camera, then try again.",
           similarity: result.similarity_score,
           threshold: result.threshold,
         },

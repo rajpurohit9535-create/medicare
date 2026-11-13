@@ -257,7 +257,7 @@ def identify_face(detector, recognizer, probe_b64: str, candidates: list) -> dic
                 "success": False,
                 "matched": False,
                 "error": "AMBIGUOUS_MATCH",
-                "message": "Multiple patient identities closely match this face. Please use Family Code + PIN.",
+                "message": "Multiple patient identities closely match this face. Please ensure you are alone in front of the camera.",
                 "best_score": round(best_score, 4),
                 "second_score": round(second_best_score, 4)
             }
