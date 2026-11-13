@@ -62,7 +62,7 @@ export default function HomePage() {
                 <ul className="mt-4 space-y-2 text-sm text-gray-600">
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#2E7D32]" />
-                    Easy Family Code & PIN login
+                    Friction-free Face Recognition login
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#2E7D32]" />

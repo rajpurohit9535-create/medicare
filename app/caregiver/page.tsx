@@ -235,7 +235,7 @@ export default function CaregiverDashboardPage() {
             >
               <Users className="w-6 h-6 text-purple-600" />
               <span className="font-bold text-sm text-gray-900">Pair Patient</span>
-              <span className="text-xs text-gray-500">Generate code & PIN</span>
+              <span className="text-xs text-gray-500">Link patient profile</span>
             </Link>
           </div>
         </div>
