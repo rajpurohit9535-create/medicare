@@ -15,7 +15,7 @@ export default function CaregiverLoginPage() {
 
   const handleFillDemo = () => {
     setEmail("caregiver@carecompanion.local");
-    setPassword("password123");
+    setPassword("password");
     setError(null);
   };
 
@@ -26,15 +26,17 @@ export default function CaregiverLoginPage() {
 
     const cleanEmail = email.trim().toLowerCase();
 
-    // Demo credentials fallback for local testing
+    // Temp password check: accepts "password" or "password123"
+    const isTempPasswordValid = password === "password" || password === "password123";
+
     if (
       cleanEmail === "caregiver@carecompanion.local" &&
-      password === "password123"
+      isTempPasswordValid
     ) {
       const supabaseUrl =
         process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder.supabase.co";
       if (supabaseUrl.includes("placeholder")) {
-        // Set local mock session cookie
+        // Set local session cookie
         document.cookie = `cc_caregiver=${encodeURIComponent(
           JSON.stringify({
             id: "11111111-1111-1111-1111-111111111111",
@@ -59,9 +61,17 @@ export default function CaregiverLoginPage() {
         });
 
       if (signInError) {
-        // If placeholder URL, allow demo pass
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
         if (supabaseUrl.includes("placeholder")) {
+          // If in local mock mode without Supabase, set session and allow entry
+          document.cookie = `cc_caregiver=${encodeURIComponent(
+            JSON.stringify({
+              id: "11111111-1111-1111-1111-111111111111",
+              email: cleanEmail,
+              fullName: "Caregiver",
+              role: "caregiver",
+            })
+          )}; path=/; max-age=86400; SameSite=Lax`;
           router.push("/caregiver");
           router.refresh();
           return;
@@ -118,7 +128,7 @@ export default function CaregiverLoginPage() {
           Caregiver Sign In
         </h1>
         <p className="mt-2 text-center text-sm text-[#4B5563]">
-          Manage and monitor your loved one&apos;s daily routine with calm confidence.
+          Traditional Email &amp; Password Login. Manage your loved one&apos;s routine with confidence.
         </p>
 
         {/* Demo filler */}
@@ -226,7 +236,7 @@ export default function CaregiverLoginPage() {
                 href="/patient/login"
                 className="font-medium text-gray-700 hover:text-black underline"
               >
-                Open Patient Mode
+                Open Patient Mode (Face or PIN)
               </Link>
             </p>
           </div>
