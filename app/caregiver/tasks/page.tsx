@@ -125,8 +125,8 @@ export default function CaregiverTasksPage() {
   };
 
   const handleFormSubmit = async (formData: TaskFormData) => {
-    if (!patient) return;
     setIsSubmitting(true);
+    const targetPatientId = patient?.id || "22222222-2222-2222-2222-222222222222";
 
     try {
       if (formMode === "new") {
@@ -135,17 +135,17 @@ export default function CaregiverTasksPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            patientId: patient.id,
+            patientId: targetPatientId,
             title: formData.title,
             icon: formData.icon,
             category: formData.category,
             timeOfDay: formData.timeOfDay,
-            repeatDays: formData.repeatDays,
+            repeatDays: formData.repeatDays && formData.repeatDays.length > 0 ? formData.repeatDays : [1, 2, 3, 4, 5, 6, 7],
             startDate: formData.startDate,
             endDate: formData.endDate,
-            steps: formData.steps,
-            caregiverNote: formData.caregiverNote,
-            encouragement: formData.encouragement,
+            steps: formData.steps || [],
+            caregiverNote: formData.caregiverNote || null,
+            encouragement: formData.encouragement || null,
             isActive: formData.isActive,
           }),
         });

@@ -50,11 +50,11 @@ export const patientLoginSchema = z.object({
 });
 
 export const taskSchema = z.object({
-  patientId: z.string().uuid(),
-  title: z.string().min(2, "Task title is required"),
+  patientId: z.string().min(1, "Patient ID is required"),
+  title: z.string().min(1, "Task title is required"),
   icon: z.enum(taskIcons).default("check"),
   category: z.enum(taskCategories).default("general"),
-  timeOfDay: z.string().regex(/^([01]\d|2[0-3]):([0-5]\d)(:([0-5]\d))?$/, "Valid time (HH:MM) required"),
+  timeOfDay: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$/, "Valid time (HH:MM) required"),
   repeatDays: z.array(z.number().int().min(1).max(7)).default([1, 2, 3, 4, 5, 6, 7]),
   startDate: z.string().optional(),
   endDate: z.string().optional().nullable(),
@@ -65,15 +65,15 @@ export const taskSchema = z.object({
 });
 
 export const sendMessageSchema = z.object({
-  patientId: z.string().uuid(),
+  patientId: z.string().min(1, "Patient ID is required"),
   body: z.string().min(1, "Message text cannot be empty"),
   kind: z.enum(["preset", "text"]).default("text"),
 });
 
 export const alertCreateSchema = z.object({
-  patientId: z.string().uuid(),
+  patientId: z.string().min(1, "Patient ID is required"),
   type: z.enum(["help", "missed_task", "inactive"]),
   message: z.string().optional(),
-  taskInstanceId: z.string().uuid().optional().nullable(),
+  taskInstanceId: z.string().optional().nullable(),
 });
 

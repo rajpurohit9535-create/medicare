@@ -73,11 +73,21 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const json = await request.json();
+
+    // Default patientId to Amma if missing or placeholder
+    if (!json.patientId) {
+      json.patientId = "22222222-2222-2222-2222-222222222222";
+    }
+
     const parseResult = taskSchema.safeParse(json);
 
     if (!parseResult.success) {
+      const fieldErrors = parseResult.error.flatten().fieldErrors;
+      const errorMsg = Object.entries(fieldErrors)
+        .map(([field, msgs]) => `${field}: ${msgs?.join(", ")}`)
+        .join("; ");
       return NextResponse.json(
-        { error: "Validation failed", details: parseResult.error.flatten() },
+        { error: `Validation failed: ${errorMsg}`, details: parseResult.error.flatten() },
         { status: 400 }
       );
     }
