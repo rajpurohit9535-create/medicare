@@ -68,7 +68,8 @@ export default function CaregiverTasksPage() {
         throw new Error(data.error || "Failed to load tasks");
       }
       setTasks(data.tasks || []);
-      setPatient(data.patient || null);
+      const p = Array.isArray(data.patient) ? data.patient[0] : data.patient;
+      setPatient(p || null);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Error loading tasks";
       setError(msg);
@@ -129,23 +130,30 @@ export default function CaregiverTasksPage() {
     const targetPatientId = patient?.id || "22222222-2222-2222-2222-222222222222";
 
     try {
-      if (formMode === "new") {
+      const isNew =
+        formMode === "new" ||
+        (typeof formMode === "object" && formMode !== null && formMode.id === "new-from-tpl");
+
+      if (isNew) {
         // Create new task
         const res = await fetch("/api/tasks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             patientId: targetPatientId,
-            title: formData.title,
+            title: formData.title.trim(),
             icon: formData.icon,
             category: formData.category,
             timeOfDay: formData.timeOfDay,
-            repeatDays: formData.repeatDays && formData.repeatDays.length > 0 ? formData.repeatDays : [1, 2, 3, 4, 5, 6, 7],
-            startDate: formData.startDate,
-            endDate: formData.endDate,
+            repeatDays:
+              formData.repeatDays && formData.repeatDays.length > 0
+                ? formData.repeatDays
+                : [1, 2, 3, 4, 5, 6, 7],
+            startDate: formData.startDate?.trim() || new Date().toISOString().split("T")[0],
+            endDate: formData.endDate?.trim() || null,
             steps: formData.steps || [],
-            caregiverNote: formData.caregiverNote || null,
-            encouragement: formData.encouragement || null,
+            caregiverNote: formData.caregiverNote?.trim() || null,
+            encouragement: formData.encouragement?.trim() || null,
             isActive: formData.isActive,
           }),
         });
@@ -158,16 +166,16 @@ export default function CaregiverTasksPage() {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: formData.title,
+            title: formData.title.trim(),
             icon: formData.icon,
             category: formData.category,
             timeOfDay: formData.timeOfDay,
             repeatDays: formData.repeatDays,
-            startDate: formData.startDate,
-            endDate: formData.endDate,
+            startDate: formData.startDate?.trim() || undefined,
+            endDate: formData.endDate?.trim() || null,
             steps: formData.steps,
-            caregiverNote: formData.caregiverNote,
-            encouragement: formData.encouragement,
+            caregiverNote: formData.caregiverNote?.trim() || null,
+            encouragement: formData.encouragement?.trim() || null,
             isActive: formData.isActive,
           }),
         });

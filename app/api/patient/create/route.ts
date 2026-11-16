@@ -23,6 +23,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Verify caller has caregiver role
+    const { data: profile, error: caregiverProfileError } = await admin
+      .from("profiles")
+      .select("role")
+      .eq("id", caregiverUser.id)
+      .maybeSingle();
+
+    if (caregiverProfileError || !profile || profile.role !== "caregiver") {
+      return NextResponse.json(
+        { error: "Forbidden: Caregiver role required" },
+        { status: 403 }
+      );
+    }
+
     const json = await request.json();
     const parseResult = patientCreateSchema.safeParse(json);
     if (!parseResult.success) {
@@ -109,6 +123,7 @@ export async function POST(request: NextRequest) {
 
     if (patientDbError) {
       console.error("Failed to create patient record:", patientDbError);
+      await admin.from("profiles").delete().eq("id", patientId);
       await admin.auth.admin.deleteUser(patientId);
       return NextResponse.json(
         { error: "Failed to save patient details" },
@@ -116,7 +131,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Link caregiver and patient
+    // Link caregiver and patient using caregiver_id from the authenticated session
     const { error: linkError } = await admin.from("caregiver_patients").insert({
       caregiver_id: caregiverUser.id,
       patient_id: patientId,
@@ -124,6 +139,14 @@ export async function POST(request: NextRequest) {
 
     if (linkError) {
       console.error("Failed to link caregiver to patient:", linkError);
+      // Clean up created patient record, profile, and auth user
+      await admin.from("patients").delete().eq("id", patientId);
+      await admin.from("profiles").delete().eq("id", patientId);
+      await admin.auth.admin.deleteUser(patientId);
+      return NextResponse.json(
+        { error: "Failed to link caregiver to patient" },
+        { status: 500 }
+      );
     }
 
     return NextResponse.json({

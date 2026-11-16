@@ -4,7 +4,7 @@ import { taskSchema } from "@/lib/validators";
 import { INITIAL_DEMO_TASKS } from "@/lib/defaultTasks";
 
 // In-memory demo store for local testing
-let inMemoryTasks = [...INITIAL_DEMO_TASKS];
+const inMemoryTasks = [...INITIAL_DEMO_TASKS];
 
 export async function GET(request: NextRequest) {
   try {
@@ -48,7 +48,8 @@ export async function GET(request: NextRequest) {
     }
 
     const patientId = links[0].patient_id;
-    const patient = links[0].patients;
+    const rawPatient = links[0].patients;
+    const patient = Array.isArray(rawPatient) ? rawPatient[0] : rawPatient;
 
     // Fetch tasks
     const { data: tasks, error: tasksError } = await supabase
@@ -72,9 +73,29 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const json = await request.json();
+    const json = await request.json().catch(() => ({}));
 
-    // Default patientId to Amma if missing or placeholder
+    // If caregiver is logged in and patientId is missing or placeholder, resolve linked patient
+    try {
+      const supabase = await createClient();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user && (!json.patientId || json.patientId === "22222222-2222-2222-2222-222222222222")) {
+        const { data: links } = await supabase
+          .from("caregiver_patients")
+          .select("patient_id")
+          .eq("caregiver_id", user.id);
+
+        if (links && links.length > 0 && links[0].patient_id) {
+          json.patientId = links[0].patient_id;
+        }
+      }
+    } catch {
+      // Fallback to default if auth check fails
+    }
+
     if (!json.patientId) {
       json.patientId = "22222222-2222-2222-2222-222222222222";
     }
@@ -87,7 +108,7 @@ export async function POST(request: NextRequest) {
         .map(([field, msgs]) => `${field}: ${msgs?.join(", ")}`)
         .join("; ");
       return NextResponse.json(
-        { error: `Validation failed: ${errorMsg}`, details: parseResult.error.flatten() },
+        { error: errorMsg ? `Validation failed: ${errorMsg}` : "Please provide a valid task title and details.", details: parseResult.error.flatten() },
         { status: 400 }
       );
     }
@@ -99,7 +120,7 @@ export async function POST(request: NextRequest) {
     const isPlaceholder = supabaseUrl.includes("placeholder");
 
     const newTask = {
-      id: `task-${Date.now()}`,
+      id: crypto.randomUUID(),
       patient_id: t.patientId,
       title: t.title,
       icon: t.icon,
@@ -127,6 +148,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (insertError) {
+      console.warn("Tasks insert error, falling back to memory:", insertError.message);
       inMemoryTasks.push(newTask);
       return NextResponse.json({ success: true, task: newTask });
     }

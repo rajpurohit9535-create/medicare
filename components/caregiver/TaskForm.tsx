@@ -142,7 +142,10 @@ export function TaskForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title.trim()) return;
+    if (!formData.title.trim()) {
+      alert("Please enter a task title.");
+      return;
+    }
     await onSubmit({
       ...formData,
       steps: formData.steps.filter((s) => s.trim().length > 0),
